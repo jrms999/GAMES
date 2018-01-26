@@ -1,0 +1,159 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:900");
+html {
+  background-color: #12355B;
+  font-family: 'Lato', sans-serif;
+}
+
+.heart, .tile {
+  fill: red;
+}
+
+.clover, .pike {
+  fill: black;
+}
+
+#app {
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  left: 0;
+}
+
+#container {
+  position: relative;
+  width: 770px;
+  margin: 0 auto;
+}
+
+.congratulation {
+  color: white;
+  font-size: 2em;
+  text-align: center;
+}
+
+.header {
+  margin: 10px;
+  height: 126px;
+}
+
+.stock, .rest, .flop, .foundation {
+  vertical-align: top;
+  display: inline-block;
+}
+
+.rest {
+  margin-right: 95px;
+}
+.rest .cardContainer {
+  position: relative;
+  width: 3px;
+  -webkit-perspective: 500px;
+          perspective: 500px;
+  display: inline-block;
+}
+.rest .cardContainer card {
+  display: inline-block;
+}
+
+.flop .cardContainer {
+  position: relative;
+  width: 30px;
+  -webkit-perspective: 500px;
+          perspective: 500px;
+  display: inline-block;
+}
+.flop .cardContainer card {
+  display: inline-block;
+}
+
+.foundation {
+  position: absolute;
+  right: 10px;
+}
+.foundation .pile {
+  box-sizing: border-box;
+  display: inline-block;
+  margin-left: 20px;
+}
+.foundation .pile .cardContainer {
+  position: absolute;
+}
+
+.tableau {
+  white-space: nowrap;
+}
+.tableau .pile {
+  display: inline-block;
+  margin: 10px;
+  vertical-align: top;
+  width: 90px;
+}
+.tableau .pile .cardContainer {
+  position: relative;
+  height: 40px;
+  -webkit-perspective: 500px;
+          perspective: 500px;
+}
+
+.cardFace, .dropTarget, .foundation > .pile {
+  width: 90px;
+  height: 126px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 0px #c4c4c4;
+}
+
+.cardFace {
+  background-color: white;
+  padding: 10px;
+  box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+}
+.cardFace.frontFace[draggable="true"] {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.cardFace.backFace {
+  background-color: lightgray;
+  position: absolute;
+  top: 0;
+}
+.cardFace.pointer {
+  cursor: pointer;
+}
+.cardFace h1 {
+  font-size: 25px;
+  display: inline-block;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin: 0;
+  margin-right: 5px;
+}
+.cardFace h1.HEART, .cardFace h1.TILE {
+  color: red;
+}
+.cardFace h1.CLOVER, .cardFace h1.PIKE {
+  color: black;
+}
+.cardFace .suitIcon {
+  padding-left: 5px;
+}
+
+.dropTarget {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.dropTarget h1 {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin: 0;
+  color: #11937C;
+  font-size: 25px;
+  text-align: center;
+  line-height: 126px;
+  vertical-align: middle;
+}
