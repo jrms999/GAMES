@@ -1,0 +1,76 @@
+* { margin:  0; padding: 0; }
+body { font: normal 12px Verdana; background: #ccc; }
+ul { list-style-type: none; }
+#container { width: 700px; height: 400px; margin: 0 auto; position: relative; }
+#container > div { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+#container #game { z-index: 2; }
+#container h1 { display: none; }
+
+#container div#statbar { z-index: 3; height: 48px; background: #f5f5f5; border-bottom: 1px solid #e5e2df; box-shadow: 0px 1px 1px -1px #fff; color: #fff; font: normal 12px Verdana; text-transform: uppercase; text-shadow: 1px 1px 1px #484646; }
+#statbar > div { background: url(../img/panel.png) 0px 0px no-repeat; width: 80px; height: 48px; position: absolute; }
+#statbar > div span { color: #484646; font-size: 14px; }
+#statbar #statbar-left { background-position: 0px 0px; top: 0; left: 15px; text-align: left; }
+#statbar #statbar-left p { margin: 10px 0 0 18px; }
+#statbar #statbar-left span { padding: 1px 0 0 30px; letter-spacing: 1px; }
+#statbar #statbar-center { background-position: 0px -48px; position: relative; margin: 0 auto; text-align: center; }
+#statbar #statbar-center p { padding: 3px 0 0 0; }
+#statbar #statbar-center span { position: absolute; top: 18px; left: 0; width: 80px; color: #fff; font: normal 12px Verdana; text-shadow: 1px 1px 1px #484646; }
+#statbar #statbar-right { background-position: 0px -96px; top: 0; right: 15px; text-align: right; }
+#statbar #statbar-right p { margin: 12px 20px 0 0; }
+#statbar #statbar-right ul { position: absolute; top: 12px; left: -50px; }
+#statbar #statbar-right ul li { display: inline-block; width: 15px; height: 11px; background: url(../img/life.jpg) no-repeat; text-indent: 5000px; overflow: hidden; }
+
+#container #menu { background: #f5f5f5; color: #888; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 10; position: relative; }
+#menu ul { padding-top: 15px; width: 100px; margin: 0 auto; }
+#menu ul li { text-align: center; background: #c6c6c6; margin-bottom: 15px; cursor: pointer; }
+#menu ul li > span { font: normal 14px Verdana; text-transform: uppercase; color: #888888; text-shadow: 1px 1px 1px #fff; display: block; padding: 15px 10px 0px 10px; }
+#menu ul li:first-child > span { font-size: 16px; }
+#menu ul li > span > span { font: normal 12px Verdana; text-transform: lowercase; display: block; border-top: 1px solid #fff; padding: 3px 10px 10px 10px; margin-top: 5px; }
+#menu ul li:hover span { background: #ad4c39; color: #fff; text-shadow: 1px 1px 1px #000; }
+#menu p { color: #888; }
+#menu h1 { margin-top: 180px; font-size: 20px; }
+#menu h2 { margin-top: 15px; font-size: 16px; }
+#menu h3 { margin-top: 15px; font-size: 14px; }
+#menu-aliens { width: 180px; height: 160px; background: url(../img/aliens.jpg) no-repeat; position: absolute; top: 20px; left: 85px; }
+#menu-rocket { width: 175px; height: 170px; background: url(../img/rocket.jpg) no-repeat; position: absolute; bottom: 10px; right: 90px; }
+#menu-social { position: absolute; bottom: 5px; left: 10px; width: 150px; text-align: left; }
+#menu-social > * { display: block; clear: both; margin: 10px 5px; }
+#menu-social > span { padding-left: 2px; }
+
+#howTo { background: #f5f5f5 url(../img/howtoplay.jpg) no-repeat; color: #666; z-index: 9; position: relative; }
+#howTo p { background: #4f3f3f; color: #eee; font-size: 12px; position: absolute; padding: 7px 10px; border-radius: 10px; }
+#howTo p.points { top: 50px; left: 20px; width: 200px; }
+#howTo p.level { top: 65px; left: 280px; width: 150px; }
+#howTo p.lives { top: 70px; right: 50px; width: 120px; }
+#howTo p.alien1 { top: 250px; left: 330px; width: 65px; }
+#howTo p.alien2 { top: 180px; left: 340px; width: 125px; }
+#howTo p.alien3 { top: 190px; right: 460px; width: 65px; }
+#howTo p.player { bottom: 10px; right: 405px; width: 265px; }
+#howTo p.controls { bottom: 10px; right: 10px; width: 165px; font-size: 10px; background: #4f3f3f url(../img/keys.jpg) 10px 29px no-repeat; padding-left: 55px; line-height: 20px; text-align: right; }
+#howTo p.controls span { display: block; }
+#howTo p.controls strong { font-size: 14px; }
+
+#about { background: #f5f5f5; color: #666; text-align: center; text-shadow: 1px 1px 1px #fff; z-index: 8; line-height: 17px; }
+#about p { margin-top: 0px; }
+#about p a { color: #ac4b38; text-decoration: none; }
+#about p a:hover { text-decoration: underline; }
+#about h2 { margin: 10px 0 5px 0; text-shadow: 1px 1px 1px #ccc; color: #4f3f3f; }
+#about h3 { margin-top: 10px; text-shadow: 1px 1px 1px #ccc; color: #4f3f3f; }
+#howTo > span, #about > span { display: inline-block; cursor: pointer; color: #4f3f3f; text-transform: uppercase; font-size: 8px; position: absolute; top: 150px; left: 5px; line-height: 40px; font-weight: bold; }
+#howTo > span > span, #about > span > span { display: inline-block; font-size: 40px; line-height: 34px; font-weight: normal; width: 40px; height: 40px; background: #4f3f3f; color: #e1dfff; border-radius: 40px; padding-right: 3px; float: left; text-align: center; margin-right: 10px; }
+#howTo > span:hover, #about > span:hover { text-decoration: underline; }
+
+#message { width: 100%; height: 100%; z-index: 5; position: relative; }
+#message .box { position: absolute; top: 100px; left: 150px; z-index: 6; width: 400px; height: 200px; background: #f5f5f5; }
+#message .box > div { position: relative; width: 100%; height: 100%; }
+#message .box > div span { position: absolute; display: block; width: 200px; height: 65px; bottom: 0px; right: 20px; background: url(../img/alerts.jpg) no-repeat; }
+#message .box > div span#box-killed { background-position: 0px 0px; }
+#message .box > div span#box-nextlevel { background-position: 0px -65px; }
+#message .box > div span#box-pause { background-position: 0px -130px; }
+#message .box > div span#box-newrocket { background-position: 0px -195px; }
+#message .box > div span#box-winner { background-position: 0px -260px; }
+#message .shadow { position: absolute; top: 0; left: 0; z-index: 3; width: 100%; height: 100%; background: #000; opacity: 0.5; }
+#message .box h4 { font: normal 24px Verdana; color: #484646; text-align: center; padding: 25px 0px; }
+#message .box p { line-height: 20px; font-size: 12px; padding: 0 40px; color: #585656; }
+#message .box p a { color: #ac4b38; text-decoration: none; }
+#message .box p a:hover { text-decoration: underline; }

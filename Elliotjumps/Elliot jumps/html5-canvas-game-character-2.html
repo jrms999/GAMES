@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Game Character Example</title>
+  </head>
+  <body>
+    <div id="canvasDiv"></div>
+    <script type="text/javascript" src="html5-canvas-game-character-2.js"></script>
+    <script type="text/javascript">
+    	prepareCanvas(document.getElementById("canvasDiv"), 490, 220);
+		document.getElementById("canvasDiv").onmousedown = function() { 
+			jump(); }
+    </script>
+  </body>
+</html>

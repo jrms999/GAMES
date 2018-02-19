@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Front Invaders</title>
+	<meta name="author" content="end3r" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<script src="./js/lib/mibbu.js"></script>
+	<script src="./js/game.js"></script>
+	<script src="./js/config.js"></script>
+	<script src="./js/input.js"></script>
+	<script src="./js/utils.js"></script>
+</head>
+<body>
+<div id="container">
+	<h1>Take control over the HTML5 Rocket, and kill as many evil alien Explorers as You can. Stand up and fight, the Open Web needs You!</h1>
+	<div id="game"></div>
+	<div id="statbar">
+		<div id="statbar-left"><p>Score<span id="points">0</span></p></div>
+		<div id="statbar-center"><p>Level<span id="level">1</span></p></div>
+		<div id="statbar-right"><p>Lives</p><ul id="lives"><li>|</li><li>|</li><li>|</li></ul></div>
+	</div>
+	<div id="menu">
+		<img src="./img/frontinvaders.jpg" alt="Front Invaders" />
+		<ul>
+			<li id="menu-start"><span>Start <span>the game</span></span></li>
+			<li id="menu-howto"><span>How <span>to play</span></span></li>
+			<li id="menu-about"><span>About <span>the game</span></span></li>
+		</ul>
+		<p id="menu-aliens"></p>
+		<p id="menu-rocket"></p>
+		<p id="menu-social"></p>
+	</div>
+	<div id="howTo">
+		<p class="points">You will earn points for killing evil aliens. <strong>Remember!</strong> You have limited ammo and will lose points everytime You shoot!</p>
+		<p class="level">Everytime You kill all of the aliens from one wave, You will proceed to another level.</p>
+		<p class="lives">You've got 3 lives and will lose one each time the aliens get You!</p>
+		<p class="alien1">Evil alien Explorer - blue, <strong>50</strong> points.</p>
+		<p class="alien2">Evil alien Explorer - red, <strong>70</strong> points.</p>
+		<p class="alien3">Evil alien Explorer - gray, <strong>100</strong> points.</p>
+		<p class="player">That's You! Move the HTML5 Rocket using keyboard controls (see right) and kill as many evil alien Explorers as You can!</p>
+		<p class="controls">
+			<span><strong>Controls</strong></span>
+			<span>right arrow - move right</span>
+			<span>left arrow - move left</span>
+			<span>spacebar - pause&frasl;unpause</span>
+			<span>Z key or up arrow - shoot</span>
+		</p>
+		<span><span>&lsaquo;</span>Back to menu</span>
+	</div>
+	<div id="about">
+		<h2>Front Invaders</h2>
+		<p>Simple HTML5 game build with the Mibbu microframework,<br />made to promote <a href="http://frontrowconf.com/">Front Row</a> - conference for the people,<br/>who want to shape the future of the web.</p>
+		<p>Front Row Conf will take place in Kraków, Poland on 20-21 October 2011.</p>
+		<h3>Info</h3>
+		<p>Take control over the HTML5 Rocket,<br />and kill as many evil alien Explorers as You can.<br />Stand up and fight, the Open Web needs You!</p>
+		<h3>Controls</h3>
+		<p>Use left and right arrow keys to move Your Rocket,<br />press up arrow or Z key to fire Your weapon,<br />hit spacebar to pause the game.</p>
+		<h3>Authors</h3>
+		<p><a href="http://end3r.com/">Andrzej Mazur</a> - coding</p>
+		<p><a href="http://mypoint.13k.pl/">Ewa Adach</a> - graphics</p>
+		<h3>Credits</h3>
+		<p><a href="http://michalbe.blogspot.com/">Michał Budzyński</a> - author of the Mibbu microframework</p>
+		<p><a href="http://frontrowconf.com/">Front Row Conf</a> - website graphics used in the game</p>
+		<span><span>&lsaquo;</span>Back to menu</span>
+	</div>
+	<div id="message"></div>
+	<script>
+		var GAME_WIDTH = 700, GAME_HEIGHT = 400;
+		var Mibbu = new mibbu(GAME_WIDTH, GAME_HEIGHT, 'game');
+		GAME.Init();
+	</script>
+</div>
+</body>
+</html>

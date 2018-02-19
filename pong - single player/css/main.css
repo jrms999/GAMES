@@ -1,0 +1,38 @@
+* {
+	text-align: center;
+}
+
+.box {
+    display: inline-block;
+    height: 200px;
+    width: 45%;
+}
+
+.red
+	{
+		background-color: blueviolet; 
+}
+.blue
+	{
+		background-color: tomato;
+}
+.green
+	{
+		background-color:brown; 
+}
+.yellow
+	{
+		background-color:cyan;
+}
+
+@media (max-width: 600px) {
+    .blue, .green {
+        display: none;
+    }
+
+
+@media (min-width: 1000px) {
+    .box {
+        width: 100%;
+    }
+}
