@@ -1,0 +1,536 @@
+/* start mixins */
+@mixin rightTriangle($vert: "top", $y: 1, $horz: "left", $x: 1, $color: red) {
+  height: 0;
+  width: 0;
+  @if $vert == "top" {
+    border-bottom: none;
+    border-top: $x+rem solid $color;
+  }
+  @else {
+    border-bottom: $x+rem solid $color;
+    border-top: none;
+  }
+  @if $horz == "left" {
+    border-left: none;
+    border-right: $y+rem solid transparent;
+  }
+  @else {
+    border-left: $y+rem solid transparent;
+    border-right: none;
+  }
+}
+
+@mixin triangle($direction: "top", $len: 1, $side1: 1, $side2: 1, $color: red) {
+	height: 0;
+	width: 0;
+  @if $direction == "top" {
+    border-bottom: $len+rem solid $color;
+    border-left: $side1+rem solid transparent;
+    border-right: $side2+rem solid transparent;
+    border-top: none;
+  }
+  @else if $direction == "bottom" {
+    border-bottom: none;
+    border-left: $side1+rem solid transparent;
+    border-right: $side2+rem solid transparent;
+    border-top: $len+rem solid $color;
+  }
+  @else if $direction == "left" {
+    border-bottom: $side2+rem solid transparent;
+    border-left: none;
+    border-right: $len+rem solid $color;
+    border-top: $side1+rem solid transparent;
+  }
+  @else if $direction == "right" {
+    border-bottom: $side2+rem solid transparent;
+    border-left: $len+rem solid $color;
+    border-right: none;
+    border-top: $side1+rem solid transparent;
+  }
+}
+/* end mixins */
+
+* {
+  &, &:before, &:after, &:focus, &:active, &:focus:active {
+    box-sizing: border-box;
+  }
+}
+html {
+  cursor: none;
+  font-size: 20px;
+}
+
+kbd {
+  background: black;
+  border-radius: 3px;
+  color: white;
+  display: inline-block;
+  font-family: menlo, sans-serif;
+  font-size: 8px;
+  height: 15px;
+  line-height: 15px;
+  min-width: 15px;
+  padding: 0 5px;
+  text-align: center;
+}
+
+#guide {
+  background: darkgray;
+  color: white;
+  font-size: 10px;
+  left: 0;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  p {
+    margin: 4px 0;
+    line-height: 1;
+  }
+}
+#controls {
+  background: rgba(white, .9);
+  border: 1px solid darkgray;
+  font-size: 10px;
+  left: -100%;
+  padding: 0 5px 0 0;
+  position: fixed;
+  top: 36px;
+  transition: left .5s ease-in-out;
+  &.open {
+    left: 0;
+  }
+  span {
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+  }
+}
+
+#environment {
+  background: #222;
+  height: 100vh;
+  position: absolute;
+  width: 100vw;
+  z-index: -1;
+  .dust {
+    animation: dust .9s infinite ease-in;
+    background: rgba(lightgray, .5);
+    border-radius: 50%;
+    box-shadow: 0 0 .5rem 0 rgba(gray, .5);
+    height: .25rem;
+    position: fixed;
+    width: .25rem;
+  }
+}
+
+#ship {
+  bottom: 2rem;
+  display: block;
+  height: 6rem;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  width: 5rem;
+  &.boost {
+    &:not(.closed) {
+      .hull {
+        .thrust {
+          animation: boosted .05s linear infinite alternate;
+          @include triangle("bottom", 2, .25, .25, cyan);
+          bottom: -.8rem;
+          transition: all .5s ease-in-out;
+          &:before {
+            animation: boosted .06s linear infinite alternate;
+            @include triangle("bottom", 1.4, .2, .2, deepskyblue);
+            top: -2rem;
+          }
+          &:after {
+            animation: boosted .07s linear infinite;
+            @include triangle("bottom", .8, .1, .1, dodgerblue);
+            top: -2rem;
+          }
+        }
+      }
+      .wings {
+        transition: all .3s ease-in-out;
+        .left {
+          top: 1.5rem;
+          &:after {
+            top: calc(50% - .7rem);
+            transform: skewY(-30deg);
+            transform-origin: top right;
+          }
+        }
+        .right {
+          top: 1.5rem;
+          &:after {
+            top: calc(50% - .7rem);
+            transform: skewY(30deg);
+            transform-origin: top left;
+          }
+        }
+      }
+    }
+  }
+  &.closed {
+    .wings {
+      .left,
+      .right {
+        top: .6rem;
+        &:after {
+          width: .8rem;
+        }        
+      }
+      .left {
+        left: calc(50% - 1.5rem);
+      }
+      .right {
+        right: calc(50% - 1.5rem);
+      }
+    }
+  }
+  .hull {
+    .left, .right {
+      position: absolute;
+      left: 50%;
+    }
+    .left {
+      border-radius: 0 0 0 100%;
+      @include rightTriangle("bottom", 1, "right", 5, gray);
+      transform: translateX(-1.2rem);
+      width: 1.2rem;
+    }
+    .right {
+      border-radius: 0 0 100%;
+      @include rightTriangle("bottom", 1, "left", 5, gray);
+      width: 1.2rem;
+    }
+    .cockpit {
+      background: cyan;
+      border-radius: 100% / 80%;
+      box-shadow:
+        inset .06rem 0 0 .06rem cyan,
+        inset 0 -.06rem 0 .06rem cyan,
+        inset .12rem -.12rem 0 .06rem white
+        ;
+      height: 1.8rem;
+      left: 50%;
+      position: absolute;
+      top: 2.4rem;
+      transform: translateX(-50%);
+      width: .8rem;
+    }
+    .thrust {
+      animation: thrust .07s linear infinite alternate;
+      @include triangle("bottom", 1, .25, .25, darkorange);
+      bottom: .2rem;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+      z-index: 0;
+      &:before,
+      &:after {
+        animation: thrust linear infinite alternate;
+        content: "";
+        left: 50%;
+        position: absolute;
+        top: -1rem;
+        transform: translateX(-50%);
+      }
+      &:before {
+        animation-direction: reverse;
+        animation-duration: .09s;
+        @include triangle("bottom", .8, .2, .2, mix(orange, gold));
+      }
+      &:after {
+        animation-duration: .11s;
+        @include triangle("bottom", .4, .1, .1, gold);
+      }
+    }
+  }
+  .wings {
+    .left,
+    .right {
+      bottom: 1.4rem;
+      position: absolute;
+      transition: all .65s ease-in;
+      z-index: -1;
+      &:before,
+      &:after {
+        transition: all .65s ease-in;
+      }
+    }
+    .left,
+    .right {
+      top: .8rem;
+      &:before {
+        content: "";
+        position: absolute;
+        top: -2.1rem;
+      }
+      &:after {
+        background: silver;
+        box-shadow: 0 .7rem 0 0 silver;
+        content: "";
+        height: .2rem;
+        position: absolute;
+        top: 50%;
+        width: 1.3rem;
+      }
+    }
+    .left {
+      @include triangle("left", 1.5, 1.5, 1, silver);
+      border-radius: 100% 0 0 0;
+      height: 4rem;
+      left: calc(50% - 2.5rem);
+      transform-origin: top right;
+      &:before {
+        border-radius: 0 0 0 100%;
+        @include rightTriangle("bottom", 1, "right", 5, #222);
+        left: .3rem;
+        width: 1.2rem;
+      }
+      &:after {
+        left: .5rem;
+        transform: rotate(-12deg);
+      }
+    }
+    .right {
+      @include triangle("right", 1.5, 1.5, 1, silver);
+      border-radius: 0 100% 0 0;
+      height: 4rem;
+      right: calc(50% - 2.5rem);
+      transform-origin: top left;
+      &:before {
+        border-radius: 0 0 100% 0;
+        @include rightTriangle("bottom", 1, "left", 5, #222);
+        right: .3rem;
+        width: 1.2rem;
+      }
+      &:after {
+        right: .5rem;
+        transform: rotate(12deg);
+      }
+    }
+  }
+}
+
+#ship:not(.boost):not(.closed) {
+  + #environment {
+    
+    .bullet {
+      position: fixed;
+      transform: scale(.7);
+      &.type1 {
+        animation: bullet .5s ease-in;
+        background: gold;
+        border-radius: 50%;
+        box-shadow: 0 .3rem .2rem 0 orange;
+        height: 1rem;
+        width: .2rem;
+      }
+      &.type2 {
+        animation: bullet .5s ease-in;
+        background: gold;
+        border-radius: 50%;
+        box-shadow: 0 .3rem .2rem 0 orange;
+        height: 1rem;
+        width: .5rem;
+      }
+      &.type3,
+      &.type4 {
+        animation: bullet .5s ease-in;
+        background: lawngreen;
+        border-radius: 50%;
+        box-shadow: 0 .3rem .2rem 0 yellow;
+        height: 3.6rem;
+        width: .2rem;
+      }
+      &.type4 {
+        &:before,
+        &:after {
+          animation: bullet .5s ease-in;
+          background: gold;
+          border-radius: 50%;
+          box-shadow: 0 .4rem .2rem -.1rem orange;
+          height: .4rem;
+          width: .3rem;
+        }
+        &:before,
+        &:after {
+          content: "";
+          position: absolute;
+          top: 1rem;
+        }
+        &:before {
+          left: 1rem;
+        }
+        &:after {
+          right: 1rem;
+        }
+      }
+      &.type5 {
+        &,
+        &:before,
+        &:after {
+          animation: bullet .5s ease-in;
+          background: lawngreen;
+          border-radius: 50%;
+          box-shadow: 0 .3rem .2rem 0 yellow;
+          height: 3.6rem;
+          transform: scaleX(.5);
+          width: .2rem;
+        }
+        &:before,
+        &:after {
+          content: "";
+          position: absolute;
+          top: 1rem;
+        }
+        &:before {
+          left: 1rem;
+        }
+        &:after {
+          right: 1rem;
+        }
+      }
+      &.type6 {
+        animation: bullet .5s ease-in;
+        background: deepskyblue;
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        box-shadow: 0 .2rem .3rem -.06rem darkviolet;
+        height: 2rem;
+        transform: scaleX(.6);
+        width: .5rem;
+      }
+      &.type7 {
+        animation: bullet .5s ease-in;
+        background: orangered;
+        border-radius: 50%;
+        box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+        height: .4rem;
+        transform: scaleX(.5);
+        width: 1rem;
+        &:before,
+        &:after {
+          animation: bulletSpreadLeftNarrow .5s ease-in;
+          background: orangered;
+          border-radius: 50%;
+          box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+          content: "";
+          height: .3rem;
+          position: absolute;
+          top: 1rem;
+          transform: scaleX(.5);
+          width: .9rem;
+        }
+        &:before {
+          left: -1rem;
+        }
+        &:after {
+          animation: bulletSpreadRightNarrow .5s ease-in;
+          right: -1rem;
+        }
+      }
+      &.type8 {
+        animation: bullet .5s ease-in;
+        background: orangered;
+        border-radius: 50%;
+        box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+        height: .4rem;
+        transform: scaleX(.5);
+        width: 1.4rem;
+        &:before,
+        &:after {
+          animation: bulletSpreadLeftWide .5s ease-in;
+          background: orangered;
+          border-radius: 50%;
+          box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+          content: "";
+          height: .3rem;
+          position: absolute;
+          top: 1rem;
+          transform: scaleX(.5);
+          width: 1.4rem;
+        }
+        &:before {
+          left: -1rem;
+        }
+        &:after {
+          animation: bulletSpreadRightWide .5s ease-in;
+          right: -1rem;
+        }
+      }
+      &.type9 {
+        animation: bullet .5s ease-in;
+        background: deepskyblue;
+        border-radius: 50%;
+        box-shadow: 0 .2rem .3rem -.06rem dodgerblue;
+        height: 4rem;
+        transform: scaleX(.3);
+        width: 1.2rem;
+      }
+    }
+  }
+}
+
+@keyframes thrust {
+  from {
+    transform-origin: top center;
+    transform: skewX(4deg) translateX(-50%);
+  }
+  to {
+    transform-origin: top center;
+    transform: skewX(-4deg) translateX(-50%);
+  }
+}
+@keyframes boosted {
+  from {
+    transform-origin: top center;
+    transform: skewX(1deg) translateX(-50%);
+  }
+  to {
+    transform-origin: top center;
+    transform: skewX(-1deg) translateX(-50%);
+  }
+}
+
+@keyframes bullet {
+  to {
+    top: 0;
+    transform: scale(1);
+  }
+}
+@keyframes bulletSpreadLeftNarrow {
+  to {
+    top: 0;
+    transform: scale(1) translateX(-4rem);
+  }
+}
+@keyframes bulletSpreadLeftWide {
+  to {
+    top: 0;
+    transform: scale(1) translateX(-10rem);
+  }
+}
+@keyframes bulletSpreadRightNarrow {
+  to {
+    top: 0;
+    transform: scale(1) translateX(4rem);
+  }
+}
+@keyframes bulletSpreadRightWide {
+  to {
+    top: 0;
+    transform: scale(1) translateX(10rem);
+  }
+}
+@keyframes dust {
+  from {
+    top: -50%;
+  }
+  to {
+    top: 150%;
+  }
+}

@@ -1,0 +1,646 @@
+/* start mixins */
+/* end mixins */
+*, *:before, *:after, *:focus, *:active, *:focus:active {
+  box-sizing: border-box;
+}
+
+html {
+  cursor: none;
+  font-size: 20px;
+}
+
+kbd {
+  background: black;
+  border-radius: 3px;
+  color: white;
+  display: inline-block;
+  font-family: menlo, sans-serif;
+  font-size: 8px;
+  height: 15px;
+  line-height: 15px;
+  min-width: 15px;
+  padding: 0 5px;
+  text-align: center;
+}
+
+#guide {
+  background: darkgray;
+  color: white;
+  font-size: 10px;
+  left: 0;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+}
+#guide p {
+  margin: 4px 0;
+  line-height: 1;
+}
+
+#controls {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid darkgray;
+  font-size: 10px;
+  left: -100%;
+  padding: 0 5px 0 0;
+  position: fixed;
+  top: 36px;
+  -webkit-transition: left .5s ease-in-out;
+  transition: left .5s ease-in-out;
+}
+#controls.open {
+  left: 0;
+}
+#controls span {
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+}
+
+#environment {
+  background: #222;
+  height: 100vh;
+  position: absolute;
+  width: 100vw;
+  z-index: -1;
+}
+#environment .dust {
+  -webkit-animation: dust .9s infinite ease-in;
+          animation: dust .9s infinite ease-in;
+  background: rgba(211, 211, 211, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 0.5rem 0 rgba(128, 128, 128, 0.5);
+  height: .25rem;
+  position: fixed;
+  width: .25rem;
+}
+
+#ship {
+  bottom: 2rem;
+  display: block;
+  height: 6rem;
+  left: 50%;
+  position: fixed;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 5rem;
+}
+#ship.boost:not(.closed) .hull .thrust {
+  -webkit-animation: boosted .05s linear infinite alternate;
+          animation: boosted .05s linear infinite alternate;
+  height: 0;
+  width: 0;
+  border-bottom: none;
+  border-left: 0.25rem solid transparent;
+  border-right: 0.25rem solid transparent;
+  border-top: 2rem solid cyan;
+  bottom: -.8rem;
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
+#ship.boost:not(.closed) .hull .thrust:before {
+  -webkit-animation: boosted .06s linear infinite alternate;
+          animation: boosted .06s linear infinite alternate;
+  height: 0;
+  width: 0;
+  border-bottom: none;
+  border-left: 0.2rem solid transparent;
+  border-right: 0.2rem solid transparent;
+  border-top: 1.4rem solid deepskyblue;
+  top: -2rem;
+}
+#ship.boost:not(.closed) .hull .thrust:after {
+  -webkit-animation: boosted .07s linear infinite;
+          animation: boosted .07s linear infinite;
+  height: 0;
+  width: 0;
+  border-bottom: none;
+  border-left: 0.1rem solid transparent;
+  border-right: 0.1rem solid transparent;
+  border-top: 0.8rem solid dodgerblue;
+  top: -2rem;
+}
+#ship.boost:not(.closed) .wings {
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+#ship.boost:not(.closed) .wings .left {
+  top: 1.5rem;
+}
+#ship.boost:not(.closed) .wings .left:after {
+  top: calc(50% - .7rem);
+  -webkit-transform: skewY(-30deg);
+          transform: skewY(-30deg);
+  -webkit-transform-origin: top right;
+          transform-origin: top right;
+}
+#ship.boost:not(.closed) .wings .right {
+  top: 1.5rem;
+}
+#ship.boost:not(.closed) .wings .right:after {
+  top: calc(50% - .7rem);
+  -webkit-transform: skewY(30deg);
+          transform: skewY(30deg);
+  -webkit-transform-origin: top left;
+          transform-origin: top left;
+}
+#ship.closed .wings .left,
+#ship.closed .wings .right {
+  top: .6rem;
+}
+#ship.closed .wings .left:after,
+#ship.closed .wings .right:after {
+  width: .8rem;
+}
+#ship.closed .wings .left {
+  left: calc(50% - 1.5rem);
+}
+#ship.closed .wings .right {
+  right: calc(50% - 1.5rem);
+}
+#ship .hull .left, #ship .hull .right {
+  position: absolute;
+  left: 50%;
+}
+#ship .hull .left {
+  border-radius: 0 0 0 100%;
+  height: 0;
+  width: 0;
+  border-bottom: 5rem solid gray;
+  border-top: none;
+  border-left: 1rem solid transparent;
+  border-right: none;
+  -webkit-transform: translateX(-1.2rem);
+          transform: translateX(-1.2rem);
+  width: 1.2rem;
+}
+#ship .hull .right {
+  border-radius: 0 0 100%;
+  height: 0;
+  width: 0;
+  border-bottom: 5rem solid gray;
+  border-top: none;
+  border-left: none;
+  border-right: 1rem solid transparent;
+  width: 1.2rem;
+}
+#ship .hull .cockpit {
+  background: cyan;
+  border-radius: 100% / 80%;
+  box-shadow: inset 0.06rem 0 0 0.06rem cyan, inset 0 -0.06rem 0 0.06rem cyan, inset 0.12rem -0.12rem 0 0.06rem white;
+  height: 1.8rem;
+  left: 50%;
+  position: absolute;
+  top: 2.4rem;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: .8rem;
+}
+#ship .hull .thrust {
+  -webkit-animation: thrust .07s linear infinite alternate;
+          animation: thrust .07s linear infinite alternate;
+  height: 0;
+  width: 0;
+  border-bottom: none;
+  border-left: 0.25rem solid transparent;
+  border-right: 0.25rem solid transparent;
+  border-top: 1rem solid darkorange;
+  bottom: .2rem;
+  left: 50%;
+  position: absolute;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  z-index: 0;
+}
+#ship .hull .thrust:before, #ship .hull .thrust:after {
+  -webkit-animation: thrust linear infinite alternate;
+          animation: thrust linear infinite alternate;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: -1rem;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+#ship .hull .thrust:before {
+  -webkit-animation-direction: reverse;
+          animation-direction: reverse;
+  -webkit-animation-duration: .09s;
+          animation-duration: .09s;
+  height: 0;
+  width: 0;
+  border-bottom: none;
+  border-left: 0.2rem solid transparent;
+  border-right: 0.2rem solid transparent;
+  border-top: 0.8rem solid #ffbe00;
+}
+#ship .hull .thrust:after {
+  -webkit-animation-duration: .11s;
+          animation-duration: .11s;
+  height: 0;
+  width: 0;
+  border-bottom: none;
+  border-left: 0.1rem solid transparent;
+  border-right: 0.1rem solid transparent;
+  border-top: 0.4rem solid gold;
+}
+#ship .wings .left,
+#ship .wings .right {
+  bottom: 1.4rem;
+  position: absolute;
+  -webkit-transition: all .65s ease-in;
+  transition: all .65s ease-in;
+  z-index: -1;
+}
+#ship .wings .left:before, #ship .wings .left:after,
+#ship .wings .right:before,
+#ship .wings .right:after {
+  -webkit-transition: all .65s ease-in;
+  transition: all .65s ease-in;
+}
+#ship .wings .left,
+#ship .wings .right {
+  top: .8rem;
+}
+#ship .wings .left:before,
+#ship .wings .right:before {
+  content: "";
+  position: absolute;
+  top: -2.1rem;
+}
+#ship .wings .left:after,
+#ship .wings .right:after {
+  background: silver;
+  box-shadow: 0 .7rem 0 0 silver;
+  content: "";
+  height: .2rem;
+  position: absolute;
+  top: 50%;
+  width: 1.3rem;
+}
+#ship .wings .left {
+  height: 0;
+  width: 0;
+  border-bottom: 1rem solid transparent;
+  border-left: none;
+  border-right: 1.5rem solid silver;
+  border-top: 1.5rem solid transparent;
+  border-radius: 100% 0 0 0;
+  height: 4rem;
+  left: calc(50% - 2.5rem);
+  -webkit-transform-origin: top right;
+          transform-origin: top right;
+}
+#ship .wings .left:before {
+  border-radius: 0 0 0 100%;
+  height: 0;
+  width: 0;
+  border-bottom: 5rem solid #222;
+  border-top: none;
+  border-left: 1rem solid transparent;
+  border-right: none;
+  left: .3rem;
+  width: 1.2rem;
+}
+#ship .wings .left:after {
+  left: .5rem;
+  -webkit-transform: rotate(-12deg);
+          transform: rotate(-12deg);
+}
+#ship .wings .right {
+  height: 0;
+  width: 0;
+  border-bottom: 1rem solid transparent;
+  border-left: 1.5rem solid silver;
+  border-right: none;
+  border-top: 1.5rem solid transparent;
+  border-radius: 0 100% 0 0;
+  height: 4rem;
+  right: calc(50% - 2.5rem);
+  -webkit-transform-origin: top left;
+          transform-origin: top left;
+}
+#ship .wings .right:before {
+  border-radius: 0 0 100% 0;
+  height: 0;
+  width: 0;
+  border-bottom: 5rem solid #222;
+  border-top: none;
+  border-left: none;
+  border-right: 1rem solid transparent;
+  right: .3rem;
+  width: 1.2rem;
+}
+#ship .wings .right:after {
+  right: .5rem;
+  -webkit-transform: rotate(12deg);
+          transform: rotate(12deg);
+}
+
+#ship:not(.boost):not(.closed) + #environment .bullet {
+  position: fixed;
+  -webkit-transform: scale(0.7);
+          transform: scale(0.7);
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type1 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: gold;
+  border-radius: 50%;
+  box-shadow: 0 .3rem .2rem 0 orange;
+  height: 1rem;
+  width: .2rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type2 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: gold;
+  border-radius: 50%;
+  box-shadow: 0 .3rem .2rem 0 orange;
+  height: 1rem;
+  width: .5rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type3, #ship:not(.boost):not(.closed) + #environment .bullet.type4 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: lawngreen;
+  border-radius: 50%;
+  box-shadow: 0 .3rem .2rem 0 yellow;
+  height: 3.6rem;
+  width: .2rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type4:before, #ship:not(.boost):not(.closed) + #environment .bullet.type4:after {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: gold;
+  border-radius: 50%;
+  box-shadow: 0 .4rem .2rem -.1rem orange;
+  height: .4rem;
+  width: .3rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type4:before, #ship:not(.boost):not(.closed) + #environment .bullet.type4:after {
+  content: "";
+  position: absolute;
+  top: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type4:before {
+  left: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type4:after {
+  right: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type5, #ship:not(.boost):not(.closed) + #environment .bullet.type5:before, #ship:not(.boost):not(.closed) + #environment .bullet.type5:after {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: lawngreen;
+  border-radius: 50%;
+  box-shadow: 0 .3rem .2rem 0 yellow;
+  height: 3.6rem;
+  -webkit-transform: scaleX(0.5);
+          transform: scaleX(0.5);
+  width: .2rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type5:before, #ship:not(.boost):not(.closed) + #environment .bullet.type5:after {
+  content: "";
+  position: absolute;
+  top: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type5:before {
+  left: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type5:after {
+  right: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type6 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: deepskyblue;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 .2rem .3rem -.06rem darkviolet;
+  height: 2rem;
+  -webkit-transform: scaleX(0.6);
+          transform: scaleX(0.6);
+  width: .5rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type7 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: orangered;
+  border-radius: 50%;
+  box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+  height: .4rem;
+  -webkit-transform: scaleX(0.5);
+          transform: scaleX(0.5);
+  width: 1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type7:before, #ship:not(.boost):not(.closed) + #environment .bullet.type7:after {
+  -webkit-animation: bulletSpreadLeftNarrow .5s ease-in;
+          animation: bulletSpreadLeftNarrow .5s ease-in;
+  background: orangered;
+  border-radius: 50%;
+  box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+  content: "";
+  height: .3rem;
+  position: absolute;
+  top: 1rem;
+  -webkit-transform: scaleX(0.5);
+          transform: scaleX(0.5);
+  width: .9rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type7:before {
+  left: -1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type7:after {
+  -webkit-animation: bulletSpreadRightNarrow .5s ease-in;
+          animation: bulletSpreadRightNarrow .5s ease-in;
+  right: -1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type8 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: orangered;
+  border-radius: 50%;
+  box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+  height: .4rem;
+  -webkit-transform: scaleX(0.5);
+          transform: scaleX(0.5);
+  width: 1.4rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type8:before, #ship:not(.boost):not(.closed) + #environment .bullet.type8:after {
+  -webkit-animation: bulletSpreadLeftWide .5s ease-in;
+          animation: bulletSpreadLeftWide .5s ease-in;
+  background: orangered;
+  border-radius: 50%;
+  box-shadow: 0 .06rem .3rem -.06rem orange, 0 .36rem .3rem -.1rem gold;
+  content: "";
+  height: .3rem;
+  position: absolute;
+  top: 1rem;
+  -webkit-transform: scaleX(0.5);
+          transform: scaleX(0.5);
+  width: 1.4rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type8:before {
+  left: -1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type8:after {
+  -webkit-animation: bulletSpreadRightWide .5s ease-in;
+          animation: bulletSpreadRightWide .5s ease-in;
+  right: -1rem;
+}
+#ship:not(.boost):not(.closed) + #environment .bullet.type9 {
+  -webkit-animation: bullet .5s ease-in;
+          animation: bullet .5s ease-in;
+  background: deepskyblue;
+  border-radius: 50%;
+  box-shadow: 0 .2rem .3rem -.06rem dodgerblue;
+  height: 4rem;
+  -webkit-transform: scaleX(0.3);
+          transform: scaleX(0.3);
+  width: 1.2rem;
+}
+
+@-webkit-keyframes thrust {
+  from {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(4deg) translateX(-50%);
+            transform: skewX(4deg) translateX(-50%);
+  }
+  to {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(-4deg) translateX(-50%);
+            transform: skewX(-4deg) translateX(-50%);
+  }
+}
+
+@keyframes thrust {
+  from {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(4deg) translateX(-50%);
+            transform: skewX(4deg) translateX(-50%);
+  }
+  to {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(-4deg) translateX(-50%);
+            transform: skewX(-4deg) translateX(-50%);
+  }
+}
+@-webkit-keyframes boosted {
+  from {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(1deg) translateX(-50%);
+            transform: skewX(1deg) translateX(-50%);
+  }
+  to {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(-1deg) translateX(-50%);
+            transform: skewX(-1deg) translateX(-50%);
+  }
+}
+@keyframes boosted {
+  from {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(1deg) translateX(-50%);
+            transform: skewX(1deg) translateX(-50%);
+  }
+  to {
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    -webkit-transform: skewX(-1deg) translateX(-50%);
+            transform: skewX(-1deg) translateX(-50%);
+  }
+}
+@-webkit-keyframes bullet {
+  to {
+    top: 0;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@keyframes bullet {
+  to {
+    top: 0;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@-webkit-keyframes bulletSpreadLeftNarrow {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(-4rem);
+            transform: scale(1) translateX(-4rem);
+  }
+}
+@keyframes bulletSpreadLeftNarrow {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(-4rem);
+            transform: scale(1) translateX(-4rem);
+  }
+}
+@-webkit-keyframes bulletSpreadLeftWide {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(-10rem);
+            transform: scale(1) translateX(-10rem);
+  }
+}
+@keyframes bulletSpreadLeftWide {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(-10rem);
+            transform: scale(1) translateX(-10rem);
+  }
+}
+@-webkit-keyframes bulletSpreadRightNarrow {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(4rem);
+            transform: scale(1) translateX(4rem);
+  }
+}
+@keyframes bulletSpreadRightNarrow {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(4rem);
+            transform: scale(1) translateX(4rem);
+  }
+}
+@-webkit-keyframes bulletSpreadRightWide {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(10rem);
+            transform: scale(1) translateX(10rem);
+  }
+}
+@keyframes bulletSpreadRightWide {
+  to {
+    top: 0;
+    -webkit-transform: scale(1) translateX(10rem);
+            transform: scale(1) translateX(10rem);
+  }
+}
+@-webkit-keyframes dust {
+  from {
+    top: -50%;
+  }
+  to {
+    top: 150%;
+  }
+}
+@keyframes dust {
+  from {
+    top: -50%;
+  }
+  to {
+    top: 150%;
+  }
+}
