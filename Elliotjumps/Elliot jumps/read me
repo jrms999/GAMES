@@ -1,0 +1,255 @@
+// http://www.williammalone.com/articles/create-html5-canvas-javascript-game-character/1/ //
+
+CREATE A GAME CHARACTER WITH HTML5 AND JAVASCRIPT - PART 1 by William Malone In Part 1 of this series we will design a game character from scratch. We will start with a drawing on paper and with the help of JavaScript we will create a breathing, blinking character on HTML5 canvas. Hopefully by the end of Part 1 you will have the tools and inspiration to create a character of your own.
+
+Character Abilities Blink Icon Blink Idea to Pixels
+
+First we start with an idea. For this character I chose to draw him on paper first. I wanted him to be very simple with few details (e.g. nose, mouth). Although I did not skimp on head size.
+
+Character drawing The next step is to get our idea to pixels. In this case since I had a drawing, I scanned it in and outlined the drawing in Adobe Illustrator. I chose varying outline thickeness, thicker around the edges of body parts and thinner for the details. Also somehow during the process his head got even bigger.
+
+Character outline Next we color in the outlines. Keeping the design simple I chose one solid colors per body part, with an additional shade as a highlight color for added detail.
+
+Character in color We are creating a dynamic character so we create our character in distinct parts. For our example we keep it simple and segment our character into six parts:
+
+Head Hair Torso Legs Left Arm Right Arm Each part is saved as a seperate png image. We will be drawing parts on top of one another so we save each one with a transparent background.
+
+Character in pieces Draw on HTML5 Canvas
+
+With the design of our character complete and in the form of six images, we start the process putting our character on canvas. The first step of that process is to load those images using JavaScript.
+
+var images = {};
+
+loadImage("leftArm"); loadImage("legs"); loadImage("torso"); loadImage("rightArm"); loadImage("head"); loadImage("hair");
+
+function loadImage(name) {
+
+images[name] = new Image(); images[name].onload = function() { resourceLoaded(); } images[name].src = "images/" + name + ".png"; } First we create a new object to hold our image references called images. Next we load each of our character parts via the loadImage function with the parameter corresponding to the part name (e.g. leftArm, legs, etc.). The loadImage function creates a new image object pointing to an image with the filename of the part name with the extension ".png" and in the folder "images". It also assigns an onload method to each image so when the image is loaded into memory it will caled the function resourceLoaded.
+
+We want to know when all of the images are loaded so we can begin drawing.
+
+var totalResources = 6; var numResourcesLoaded = 0; var fps = 30;
+
+function resourceLoaded() {
+
+numResourcesLoaded += 1; if(numResourcesLoaded === totalResources) { setInterval(redraw, 1000 / fps); } }
+
+We create a couple variables to track the image load process: totalResources and numResourcesLoaded. The resourceLoaded function increments the number of images that have been loaded. When all the images are ready we start a timer using setInterval that will call the redraw function 30 times a second.
+
+During the redraw process the canvas will be cleared and all parts will be redrawn. The order of that process is important. We first draw the the parts farthest away such as the left arm that will be covered up by our character's legs and torso.
+
+Character in layers We need access to the HTML5 canvas context that we will draw on. For more information on how to access the canvas' context (and a workaround for IE) refer to HTML5 Canvas Example.
+
+var context = document.getElementById('canvas').getContext("2d"); Layer by layer, each body part's image is positioned and then drawn on an HTML5 canvas.
+
+var charX = 245; var charY = 185;
+
+function redraw() {
+
+var x = charX; var y = charY;
+
+canvas.width = canvas.width; // clears the canvas
+
+context.drawImage(images["leftArm"], x + 40, y - 42); context.drawImage(images["legs"], x, y); context.drawImage(images["torso"], x, y - 50); context.drawImage(images["rightArm"], x - 15, y - 42); context.drawImage(images["head"], x - 10, y - 125); context.drawImage(images["hair"], x - 37, y - 138); } Before drawing anything we first clear the canvas using the weird assignment canvas.width = canvas.width. Then we draw each image using the context drawImage method specifying three parameters: the image reference, its x position, its y position. The image positions are relative to the canvas' top left hand corner.
+
+Here is what the canvas looks like so far:
+
+Something's missing...
+
+Eyes
+
+To add the eyes we are going to draw two ovals. We could have added the eyes to the eyes to the head image, but we want them to be dynamic to enable our first behavior: blinking.
+
+Character eyes closeup We call a drawEllipse function for each eye at the end of the redraw function. We want them on top of all the other body part images.
+
+function redraw() { ... drawEllipse(x + 47, y - 68, 8, 14); // Left Eye drawEllipse(x + 58, y - 68, 8, 14); // Right Eye } The drawEllipse takes four parameters specifying the position and dimensions of the ellipse. For more information on the drawEllipse function see the brief: How to draw an ellipse on HTML5 Canvas.
+
+function drawEllipse(centerX, centerY, width, height) {
+
+context.beginPath();
+
+context.moveTo(centerX, centerY - height/2);
+
+context.bezierCurveTo( centerX + width/2, centerY - height/2, centerX + width/2, centerY + height/2, centerX, centerY + height/2);
+
+context.bezierCurveTo( centerX - width/2, centerY + height/2, centerX - width/2, centerY - height/2, centerX, centerY - height/2);
+
+context.fillStyle = "black"; context.fill(); context.closePath(); } Our character matches our original digital version minus the shadow.
+
+Shadow
+
+We create the shadow with one oval at our characters feet.
+
+Character shadow closeup function redraw() { ... canvas.width = canvas.width; // clears the canvas
+
+drawEllipse(x + 40, y + 29, 160, 6); ... } We want the shadow behind all the other image layers sp an ellipse is drawn at the beginning of the redraw function.
+
+Now we have on HTML5 canvas what we had with a drawing program. Remember, the HTML5 canvas is dynamic. Let's make use of that.
+
+Breathe
+
+var breathInc = 0.1; var breathDir = 1; var breathAmt = 0; var breathMax = 2; var breathInterval = setInterval(updateBreath, 1000 / fps); function updateBreath() {
+
+if (breathDir === 1) { // breath in breathAmt -= breathInc; if (breathAmt < -breathMax) { breathDir = -1; } } else { // breath out breathAmt += breathInc; if(breathAmt > breathMax) { breathDir = 1; } } } The updateBreath function increases or decreases the breath amount. Once the breath reaches it maximum it changes the breath direction. Breath in, breath out.
+
+The purpose of this process is to update the variable breathAmt which we will use to represent the constant breathing of our character in the form of a subtle rise and fall of the head and arms.
+
+To breath life into our static pile of images, we turn to our redraw function. We the help or the variable breathAmt we vary the vertical position of certain body part images.
+
+function redraw() {
+
+canvas.width = canvas.width; // clears the canvas
+
+drawEllipse(x + 40, y + 29, 160 - breathAmt, 6); // Shadow
+
+context.drawImage(images["leftArm"], x + 40, y - 42 - breathAmt); context.drawImage(images["legs"], x, y); context.drawImage(images["torso"], x, y - 50); context.drawImage(images["head"], x - 10, y - 125 - breathAmt); context.drawImage(images["hair"], x - 37, y - 138 - breathAmt); context.drawImage(images["rightArm"], x - 15, y - 42 - breathAmt);
+
+drawEllipse(x + 47, y - 68 - breathAmt, 8, 14); // Left Eye drawEllipse(x + 58, y - 68 - breathAmt, 8, 14); // Right Eye } We subtract the vertical location by value of the variable breathAmt for all the pieces we want to oscillate. The shadow will reflect this vertical motion in a change in width.
+
+Blink
+
+The time has come for our first behavior of this series. After a given amount of time we will make our character blink.
+
+var maxEyeHeight = 14; var curEyeHeight = maxEyeHeight; var eyeOpenTime = 0; var timeBtwBlinks = 4000; var blinkUpdateTime = 200;
+var blinkTimer = setInterval(updateBlink, blinkUpdateTime); We added several globals:
+
+maxEyeHeight: Eye height when our character eyes are wide open. curEyeHeight: Current eye height while blinking. eyeOpenTime: Milliseconds since last blink. timeBtwBlinks: Milliseconds between blinks. blinkUpdateTime: Milliseconds before updating blink status. blinkTimer: Calls the updateBlink function every blinkUpdateTime milliseconds. Update the redraw function so the height corresponds with the new variable curEyeHeight
+
+function redraw() { ... drawEllipse(x + 47, y - 68 - breathAmt, 8, curEyeHeight); drawEllipse(x + 58, y - 68 - breathAmt, 8, curEyeHeight); } Every few moments we check to see if its time to blink.
+
+function updateBlink() {
+
+eyeOpenTime += blinkUpdateTime;
+
+if(eyeOpenTime >= timeBtwBlinks){ blink(); } }
+
+function blink() {
+
+curEyeHeight -= 1; if (curEyeHeight <= 0) { eyeOpenTime = 0; curEyeHeight = maxEyeHeight; } else { setTimeout(blink, 10); } } When the updateBlink function is called the eye open time is updated by increasing the variable eyeOpenTime. If the eye open time is greater than the timeBtwBlinks value we begin blinking by calling the blink function. The blink function will decrement the current eye height until reaching zero. When the eyes are closed we set the eye height to maximum and reset the eye open time.
+
+Working Example
+
+Here is a working example. The example code is available for download below.
+
+Character Abilities Blink Icon Blink Create Your Own Character
+
+Now try creating your own character. Download the source code below and edit the six provided images to make them your own. For example, I tweaked the images just a bit and made our character a zombie:
+
+Character Abilities Blink Icon Blink What's Next
+
+Getting our character the ability to jump.
+
+http://www.williammalone.com/articles/create-html5-canvas-javascript-game-character/2/
+
+The example below shows our character getting pelted with a little red ball. The only remedy is jumping. Click the jump button below to save him from his sisyphean monotony.
+
+Character Abilities
+Blink Icon Jump Icon
+BlinkJump
+What's in a Jump
+
+Below is an illustration of the character before and during a jump. There are a six differences. Can you spot them?
+
+Character Jump Outline
+The differences:
+
+The left arm is rotated.
+The right arm is rotated.
+The left leg is up a bit.
+The right leg is pulled back
+The position of the character is higher.
+The shadow is smaller.
+Save the State
+
+We create a variable to store our characters jump state.
+
+var jumping = false;
+We initialize the variable jumping to false
+
+We create a function jump that will only change state if not already jumping.
+
+function jump() {
+                        
+  if (!jumping) {
+    jumping = true;
+    setTimeout(land, 500);
+  }
+}
+Thejump function first checks the value of the variable jumping. If jumping is true then do nothing because a jump is in progress. If jumping is false then set the jumping variable to true and call the function land after 500 miliseconds (0.5 seconds).
+
+The land function will end the jump.
+
+function land() {
+                        
+  jumping = false;
+}
+The land function simply sets the jumping variable to false.
+
+New Jump Images
+
+The jump state will require drawing 3 new images. We created them like we did in Part 1 and save them as transparent pngs.
+
+Character Jump Outline
+var totalResources = 9;
+
+loadImage("leftArm-jump");
+loadImage("legs-jump");
+loadImage("rightArm-jump");
+We increment the totalResources variable by 3 and load the three new images which have "-jump" appended to their files names.
+
+Redraw
+
+Now we update the redraw function we created in Part 1 to reflect the new jump state.
+
+function redraw() {
+
+  var x = charX;
+  var y = charY;
+  var jumpHeight = 45;
+  
+  canvas.width = canvas.width; // clears the canvas 
+
+  // Draw shadow
+  if (jumping) {
+    drawEllipse(x + 40, y + 29, 100 - breathAmt, 4);
+  } else {
+    drawEllipse(x + 40, y + 29, 160 - breathAmt, 6);
+  }
+  
+  if (jumping) {
+    y -= jumpHeight;
+  }
+
+  if (jumping) {
+    context.drawImage(images["leftArm-jump"], x + 40, y - 42 - breathAmt);
+  } else {
+    context.drawImage(images["leftArm"], x + 40, y - 42 - breathAmt);
+  }
+  
+  if (jumping) {
+    context.drawImage(images["legs-jump"], x - 6, y );
+  } else {
+    context.drawImage(images["legs"], x, y);
+  }
+    
+  context.drawImage(images["torso"], x, y - 50);
+  context.drawImage(images["head"], x - 10, y - 125 - breathAmt);
+  context.drawImage(images["hair"], x - 37, y - 138 - breathAmt);
+  
+  if (jumping) {
+    context.drawImage(images["rightArm-jump"], x - 35, y - 42 - breathAmt);
+  } else {
+    context.drawImage(images["rightArm"], x - 15, y - 42 - breathAmt);
+  }
+  
+  // Draw eyes
+  drawEllipse(x + 47, y - 68 - breathAmt, 8, curEyeHeight);
+  drawEllipse(x + 58, y - 68 - breathAmt, 8, curEyeHeight);
+}
+We add a new variable jumpHeight which is how many pixels our character will jump.
+
+If the jumping is true then do the following:
+
+Make the character shadow smaller.
+Increment the character y position by the jump height.
+Draw the jump version of the arms and legs.
