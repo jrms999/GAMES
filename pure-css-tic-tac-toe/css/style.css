@@ -1,0 +1,173 @@
+:checked + :checked + :checked ~ .message--x:after,
+:checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :not(:checked) + :checked + :not(:checked) + :checked + :not(:checked) + :checked ~ .message--x:after,
+:checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked ~ .message--x:after {
+  content: "X Wins!";
+  background: #ff64d1;
+}
+
+:checked + :checked + :checked ~ .message--o:after,
+:checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :not(:checked) + :checked + :not(:checked) + :checked + :not(:checked) + :checked ~ .message--o:after,
+:checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked ~ .message--o:after {
+  content: "O Wins!";
+  background: #71e571;
+}
+
+:checked + :checked + :checked ~ .message--x:after,
+:checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :not(:checked) + :checked + :not(:checked) + :checked + :not(:checked) + :checked ~ .message--x:after,
+:checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked ~ .message--x:after, :checked + :checked + :checked ~ .message--o:after,
+:checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :not(:checked) + :checked + :not(:checked) + :checked + :not(:checked) + :checked ~ .message--o:after,
+:checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked ~ .message--o:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 10;
+  font-size: 3em;
+  line-height: 5.3;
+  font-weight: 800;
+}
+
+:checked {
+  pointer-events: none;
+}
+
+body {
+  text-align: center;
+  font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+  color: #333;
+}
+
+.team--x {
+  counter-reset: count-x;
+}
+
+.team--o {
+  counter-reset: count-o;
+}
+
+.team--x :checked {
+  counter-increment: count-x;
+}
+
+.team--o :checked {
+  counter-increment: count-o;
+}
+
+.total-count--x::after {
+  content: counter(count-x);
+}
+
+.total-count--o::after {
+  content: counter(count-o);
+}
+
+.team--x,
+.team--o {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+body {
+  text-align: center;
+  background: #eee;
+  position: relative;
+  padding: 3em;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: 800;
+  margin-bottom: .5em;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5;
+  max-width: 18em;
+  margin: 0 auto;
+}
+
+input {
+  border: none;
+  display: block;
+  float: left;
+  margin: 0;
+  background-color: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 8em;
+  height: 8em;
+}
+.team--x input {
+  outline: 1px solid #ff64d1;
+}
+.team--o input {
+  outline: 1px solid #71e571;
+}
+
+.gameboard {
+  display: block;
+  position: absolute;
+  width: 18em;
+  margin: 1.5em auto;
+  left: 0;
+  right: 0;
+}
+
+:checked:after {
+  line-height: .75;
+  font-size: 8em;
+  text-align: center;
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+.team--x :checked:after {
+  background-color: #ff64d1;
+  content: 'x';
+}
+.team--o :checked:after {
+  background-color: #71e571;
+  content: 'o';
+}
+
+@-webkit-keyframes turn-switcher {
+  0% {
+    z-index: 1;
+    pointer-events: none;
+  }
+  1% {
+    z-index: -1;
+    pointer-events: all;
+  }
+}
+
+@keyframes turn-switcher {
+  0% {
+    z-index: 1;
+    pointer-events: none;
+  }
+  1% {
+    z-index: -1;
+    pointer-events: all;
+  }
+}
+.team--x {
+  -webkit-animation: turn-switcher 10s forwards linear infinite;
+          animation: turn-switcher 10s forwards linear infinite;
+  -webkit-animation-delay: 5s;
+          animation-delay: 5s;
+}

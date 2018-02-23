@@ -1,0 +1,180 @@
+$green: #71e571;
+$pink: #ff64d1;
+
+// basic example: https://codepen.io/una/pen/xVOpRr
+
+// all of the cases
+:checked + :checked + :checked ~ .message--x:after,
+:checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--x:after,
+:not(:checked) + :not(:checked) + :checked + :not(:checked) + :checked + :not(:checked) + :checked ~ .message--x:after,
+:checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :not(:checked)+ :checked ~ .message--x:after,
+{
+  @extend %win-message;
+  content: "X Wins!";
+  background: $pink;
+}
+
+// O cases
+
+:checked + :checked + :checked ~ .message--o:after,
+:checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :checked ~ .message--o:after,
+:not(:checked) + :not(:checked) + :checked + :not(:checked) + :checked + :not(:checked) + :checked ~ .message--o:after,
+:checked + :not(:checked) + :not(:checked) + :not(:checked) + :checked + :not(:checked) + :not(:checked) + :not(:checked)+ :checked ~ .message--o:after,
+{
+  @extend %win-message;
+  content: "O Wins!";
+  background: $green;
+}
+
+%win-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 10;
+  font-size: 3em;
+  line-height: 5.3;
+  font-weight: 800;
+}
+
+// once it's checked you can't uncheck it
+:checked {
+  pointer-events: none;
+}
+
+body {
+  text-align: center;
+  font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+  color: #333;
+}
+
+.team--x {
+  counter-reset: count-x;
+}
+
+.team--o {
+  counter-reset: count-o;
+}
+
+.team--x :checked {
+  counter-increment: count-x;
+}
+
+.team--o :checked {
+  counter-increment: count-o;
+}
+
+.total-count--x::after {
+  content: counter(count-x);
+}
+
+.total-count--o::after {
+  content: counter(count-o);
+}
+
+// boxes overlap
+.team--x,
+.team--o {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+// just page styling:
+
+body {
+  text-align: center;
+  background: #eee;
+  position: relative;
+  padding: 3em;
+}
+
+h1 {
+  font-size: 1.5em;
+  font-weight: 800;
+  margin-bottom: .5em;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5;
+  max-width: 18em;
+  margin: 0 auto;
+}
+
+// styling the checks
+
+$box-size: 8em;
+
+input {
+  border: none;
+  display: block;
+  float: left;
+  margin: 0;
+  background-color: none;
+  appearance: none;
+  width: $box-size;
+  height: $box-size;
+  
+  .team--x & {
+    outline: 1px solid $pink;
+  }
+
+  .team--o & {
+    outline: 1px solid $green;
+  }
+}
+
+.gameboard {
+  display: block;
+  position: absolute;
+  width: $box-size*2.25;
+  margin: 1.5em auto;
+  left: 0;
+  right: 0;
+}
+
+:checked {
+  &:after {
+    line-height: .75;
+    font-size: $box-size;
+    text-align: center;
+    width: 1em;
+    height: 1em;
+    display: block;
+    
+    .team--x & {
+      background-color: $pink;
+      content: 'x';
+    }
+    
+    .team--o & {
+      background-color: $green;
+      content: 'o';
+    }
+  }
+}
+
+// Animating a Set-Timeout for Turn switching
+
+@keyframes turn-switcher {
+  0% {
+    z-index: 1;
+    pointer-events: none;
+  }
+  1% {
+    z-index: -1;
+    pointer-events: all;
+  }
+}
+
+// applying the animation:
+.team--x {
+  animation: turn-switcher 10s forwards linear infinite;
+  animation-delay: 5s;
+}
